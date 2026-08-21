@@ -1,0 +1,6 @@
+{
+  "name": "Monitoramento de Temperaturas",
+  "description": "Dashboard meteorológico para estudo e análise das temperaturas dos últimos 12 meses com estatísticas climáticas, anomalias, ciclos diurnos e rosa térmica.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
