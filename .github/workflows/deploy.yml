@@ -1,0 +1,50 @@
+name: Deploy Webpack to Pages
+
+on:
+  push:
+    branches: ["main"] # Mude para "master" se a sua branch principal tiver esse nome
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Compilar projeto (Webpack Build)
+        run: npm run build
+
+      - name: Upload do artefato compilado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # ATENÇÃO: Verifique no seu projeto se o Webpack gera a pasta 'dist' ou 'build'
+          path: './dist' 
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Implantar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
