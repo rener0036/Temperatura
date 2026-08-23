@@ -2,7 +2,7 @@ name: Deploy Webpack to Pages
 
 on:
   push:
-    branches: ["main"] # Mude para "master" se a sua branch principal tiver esse nome
+    branches: ["main"] # Altere para "master" se o nome da sua branch principal for master
 
 permissions:
   contents: read
@@ -24,10 +24,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: Instalar dependências
-        run: npm ci
+        run: npm install
 
       - name: Compilar projeto (Webpack Build)
         run: npm run build
@@ -35,7 +34,7 @@ jobs:
       - name: Upload do artefato compilado
         uses: actions/upload-pages-artifact@v3
         with:
-          # ATENÇÃO: Verifique no seu projeto se o Webpack gera a pasta 'dist' ou 'build'
+          # Se o seu projeto salvar os arquivos finais na pasta 'build' em vez de 'dist', mude abaixo para './build'
           path: './dist' 
 
   deploy:
